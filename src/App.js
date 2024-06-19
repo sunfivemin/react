@@ -7,6 +7,7 @@ function App() {
     let [글제목, 글제목함수] = useState(["남자코트 추천", "강남 우동맛집", "토글 독학", "독학"]); // 스테이트
     let [like, likeFunc] = useState([0, 0, 0, 0]); // 두번째는 state 변경용 함수임, 스테이트 변경을해야 재랜더링 이뤄짐
     let [modal, setModal] = useState(false);
+    let [title, setTitle] = useState(1);
 
     const 라이크올리는기능 = (i) => {
         let copy = [...like];
@@ -43,7 +44,7 @@ function App() {
             {글제목.map(function (a, i) {
                 return (
                     <div className="list" key={i}>
-                        <h4 onClick={() => setModal(!modal)}>
+                        <h4 onClick={() => {setModal(!modal); setTitle(i);}}>
                             {글제목[i]}
                             <span onClick={() => 라이크올리는기능(i)}>👍</span> {like[i]}
                         </h4>
@@ -52,7 +53,7 @@ function App() {
                 );
             })}
 
-            {modal === true ? <Modal color={'#ddffff'}  글제목바뀌는기능={글제목바뀌는기능} 글제목={글제목} /> : ""}
+            {modal === true ? <Modal color={'#ddffff'} title={title} 글제목바뀌는기능={글제목바뀌는기능} 글제목={글제목} /> : ""}
         </div>
     );
 }
@@ -61,7 +62,7 @@ let Modal = (props) => {
     return (
         <>
             <div className="modal" style={{background : props.color}}>
-                <h4>{props.글제목[0]}</h4>
+                <h4>{props.글제목[props.title]}</h4>
                 <p>날짜</p>
                 <p>상세내용</p>
                 <button onClick={() => { props.글제목바뀌는기능() }}>글수정</button>
