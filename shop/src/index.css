@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    h1 {
+      @apply text-2xl;
+    }
+    h2 {
+      @apply text-xl;
+    }
+  }
+
+@layer components {
+    .my-custom-style {
+        @apply grid w-full grid-cols-3 overflow-hidden mb-10;
+    }
+
+    .card {
+        background-color: theme('colors.green'); 
+        border-radius: theme('borderRadius.lg');
+        padding: theme('spacing.6');
+        box-shadow: theme('boxShadow.xl');
+      }
+}
+
