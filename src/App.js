@@ -8,13 +8,14 @@ function App() {
     let [like, likeFunc] = useState([0, 0, 0, 0]); // 두번째는 state 변경용 함수임, 스테이트 변경을해야 재랜더링 이뤄짐
     let [modal, setModal] = useState(false);
     let [title, setTitle] = useState(1);
+    let [입력값, 입력값변경] = useState("");
 
-    const 라이크올리는기능 = (i) => {
+    const 라이크올리는기능 = (i, event) => {
+        event.stopPropagation();
         let copy = [...like];
         copy[i] = copy[i] + 1;
         likeFunc(copy);
     };
-
 
     const 글제목바뀌는기능 = () => {
         let copy = [...글제목]; // 복사본을 만들어야함(shallow copy)
@@ -39,21 +40,54 @@ function App() {
             <button onClick={글제목바뀌는기능}>button</button>
             <button onClick={정렬기능}>정렬</button>
 
-
- 
             {글제목.map(function (a, i) {
                 return (
                     <div className="list" key={i}>
-                        <h4 onClick={() => {setModal(!modal); setTitle(i);}}>
+                        <h4
+                            onClick={() => {
+                                setModal(!modal);
+                                setTitle(i);
+                            }}>
                             {글제목[i]}
-                            <span onClick={() => 라이크올리는기능(i)}>👍</span> {like[i]}
+                            <span onClick={(event) => 라이크올리는기능(i, event)}>👍</span> {like[i]}
                         </h4>
                         <p>2월 17일 발행</p>
+                        <button
+                            onClick={() => {
+                                let copy = [...글제목];
+                                copy.splice(i,1);
+                                글제목함수(copy);
+
+                                let likeCopy = [...like];
+                                likeCopy.splice(i, 1);
+                                likeFunc(likeCopy);
+                            }}>
+                            삭제
+                        </button>
                     </div>
                 );
             })}
 
-            {modal === true ? <Modal color={'#ddffff'} title={title} 글제목바뀌는기능={글제목바뀌는기능} 글제목={글제목} /> : ""}
+            <input
+                onChange={(e) => {
+                    입력값변경(e.target.value);
+                }}
+            />
+            <button
+                onClick={() => {
+                    let copy = [...글제목];
+                    copy.unshift(입력값);
+                    글제목함수(copy);
+
+
+                    let likeCopy = [...like];
+                    likeCopy.unshift(0);
+                    likeFunc(likeCopy);
+                }}>
+                글발행
+            </button>
+
+            {modal === true ? <Modal color={"#ddffff"} title={title} 글제목바뀌는기능={글제목바뀌는기능} 글제목={글제목} /> : ""}
         </div>
     );
 }
@@ -61,11 +95,16 @@ function App() {
 let Modal = (props) => {
     return (
         <>
-            <div className="modal" style={{background : props.color}}>
+            <div className="modal" style={{ background: props.color }}>
                 <h4>{props.글제목[props.title]}</h4>
                 <p>날짜</p>
                 <p>상세내용</p>
-                <button onClick={() => { props.글제목바뀌는기능() }}>글수정</button>
+                <button
+                    onClick={() => {
+                        props.글제목바뀌는기능();
+                    }}>
+                    글수정
+                </button>
             </div>
             <div></div>
         </>
