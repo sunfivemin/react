@@ -1,29 +1,33 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
-
-let user = createSlice({
-  name: "user",
-  initialState: { name: "kim", age: 20 },
-  reducers: {
-    changeName(state) {
-      state.name = "park";
-    },
-  },
-});
-
-export let { changeName } = user.actions;
+import user from "./store/userSlice.js";
 
 let cart = createSlice({
-  name: "cart",
-  initialState: [
-    { id: 0, name: "White and Black", count: 2 },
-    { id: 2, name: "Grey Yordan", count: 1 },
-  ],
+    name: "cart",
+    initialState: [
+        { id: 0, name: "White and Black", count: 2 },
+        { id: 2, name: "Grey Yordan", count: 1 },
+    ],
+    reducers: {
+        addCount(state, action) {
+            let 번호 = state.findIndex((a) => {
+                return a.id === action.payload;
+            });
+            state[번호].count++;
+        },
+        addItem(state, action) {
+            state.push(action.payload);
+        },
+        removeItem(state, action) {
+            return state.filter((item) => item.id !== action.payload);
+        },
+    },
 });
 
+export let { addCount, addItem, removeItem } = cart.actions;
 // 등록
 export default configureStore({
-  reducer: {
-    user: user.reducer,
-    cart: cart.reducer,
-  },
+    reducer: {
+        user: user.reducer,
+        cart: cart.reducer,
+    },
 });
