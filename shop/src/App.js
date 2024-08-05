@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import "./App.css";
 import clothone from "./assets/images/cloth1.png";
 import clothtwo from "./assets/images/cloth2.jpg";
@@ -8,9 +8,13 @@ import cloth5 from "./assets/images/cloth2.jpg";
 import cloth6 from "./assets/images/cloth3.png";
 import data from "./data";
 import { Routes, Route, Link, useNavigate, Outlet } from "react-router-dom";
-import Detail from "./pages/Detail";
-import Cart from "./pages/Cart";
+import { useQuery } from "react-query";
+// import Detail from "./pages/Detail";
+// import Cart from "./pages/Cart";
 import axios from "axios";
+
+const Detail = lazy(() => import("./pages/Detail.js"));
+const Cart = lazy(() => import("./pages/Cart.js"));
 
 const clothImages = [clothone, clothtwo, cloththree, cloth4, cloth5, cloth6];
 
@@ -28,6 +32,15 @@ function App() {
             setFade("");
         };
     }, []);
+
+    let result = useQuery(
+        "작명",
+        () =>
+            axios.get("https://codingapple1.github.io/userdata.json").then((a) => {
+                return a.data;
+            }),
+        { staleTime: 2000 }
+    );
 
     return (
         <div className={"App start " + fade}>
@@ -49,7 +62,7 @@ function App() {
 
                         <div className="relative items-center ml-auto lg:flex">
                             <nav className="text-sm font-semibold leading-6 text-slate-700">
-                                <ul className="flex space-x-8">
+                                <ul className="flex items-center space-x-8">
                                     <li>
                                         <Link className="hover:text-sky-900 font-gmarket" to="/">
                                             홈
@@ -74,6 +87,13 @@ function App() {
                                             }}>
                                             장바구니
                                         </Link>
+                                    </li>
+                                    <li>
+                                        <div className="flex items-center justify-center w-10 h-10 text-white rounded-full bg-slate-900">
+                                            {result.isLoading && "로딩중"}
+                                            {result.error && "에러남"}
+                                            {result.data && result.data.name}
+                                        </div>
                                     </li>
                                 </ul>
                             </nav>
@@ -121,7 +141,15 @@ function App() {
                     }
                 />
 
-                <Route path="/detail/:id" element={<Detail cloths={cloths} />} />
+                <Route
+                    path="/detail/:id"
+                    element={
+                        <Suspense fallback={<div>로딩중임</div>}>
+                            <Detail cloths={cloths} />
+                        </Suspense>
+                    }
+                />
+
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/about" element={<About />}>
                     <Route path="member" element={<div>11111</div>} />

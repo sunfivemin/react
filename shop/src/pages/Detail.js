@@ -3,9 +3,10 @@ import clothone from "../assets/images/cloth1.png";
 import { useParams } from "react-router-dom";
 import { addItem } from "./../store.js";
 import { useDispatch } from "react-redux";
+import { useLike } from "./../hooks/like.js";
 
 function Detail(props) {
-    let [alert, setAlert] = useState(true);
+    let [, setAlert] = useState(true);
 
     const [activeTab, setActiveTab] = useState(0);
     const [endClass, setEndClass] = useState("");
@@ -14,11 +15,31 @@ function Detail(props) {
     const [errorMessage, setErrorMessage] = useState("");
     let { id } = useParams();
     let dispatch = useDispatch();
+    // let [like, setLike] = useState(0);
+
+    // function addLike() {
+    //     setLike((a) => {
+    //         return a + 1;
+    //     });
+    // }
+
+    let [like, addLike] = useLike();
 
     const handleTabClick = (index) => {
         setActiveTab(index);
         setEndClass("");
     };
+
+    useEffect(() => {
+        let 꺼낸거 = localStorage.getItem("watched");
+        꺼낸거 = JSON.parse(꺼낸거);
+        꺼낸거.push(찾은상품.id);
+
+        //Set으로 바꿨다가 다시 array로 만들기
+        꺼낸거 = new Set(꺼낸거);
+        꺼낸거 = Array.from(꺼낸거);
+        localStorage.setItem("watched", JSON.stringify(꺼낸거));
+    }, []);
 
     useEffect(() => {
         if (errorMessage) {
@@ -100,6 +121,13 @@ function Detail(props) {
             <div className="flex flex-wrap">
                 <div className="w-1/3 w-full px-4 mb-4">
                     <img style={{ backgroundImage: "url(" + clothone + ")" }} className="w-full mx-auto h-[24rem] bg-center bg-contain bg-no-repeat" alt="" />
+                    <h4>{like}</h4>
+                    <button
+                        onClick={() => {
+                            addLike();
+                        }}>
+                        ❤
+                    </button>
                     <h4 className="mt-2 text-xl font-bold">{찾은상품.title}</h4>
                     <p className="text-gray-700">{찾은상품.content}</p>
                     <p className="text-gray-700">{찾은상품.price}</p>

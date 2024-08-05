@@ -1,15 +1,31 @@
+import { memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { increase } from "./../store/userSlice.js";
 import { addCount } from "./../store.js";
+
+let Child = memo(function () {
+    console.log("1222");
+    return <div>자식임</div>;
+});
+
+// memo: 특정상황(props가 변할때만)에서만 재렌더링, 비교작업때문에 느려질 수 있다.
 
 function Cart() {
     // 필요한 상태만 선택합니다.
     const user = useSelector((state) => state.user);
     const cart = useSelector((state) => state.cart);
     const dispatch = useDispatch();
+    let [count, setCount] = useState(0);
 
     return (
         <div className="container p-4 mx-auto mt-10">
+            <Child count={count}></Child>
+            <button
+                onClick={() => {
+                    setCount(count + 1);
+                }}>
+                +
+            </button>
             <h6>
                 {user.name}({user.age})의 장바구니
             </h6>
