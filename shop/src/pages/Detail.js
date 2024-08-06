@@ -15,13 +15,6 @@ function Detail(props) {
     const [errorMessage, setErrorMessage] = useState("");
     let { id } = useParams();
     let dispatch = useDispatch();
-    // let [like, setLike] = useState(0);
-
-    // function addLike() {
-    //     setLike((a) => {
-    //         return a + 1;
-    //     });
-    // }
 
     let [like, addLike] = useLike();
 
@@ -122,6 +115,7 @@ function Detail(props) {
                 <div className="w-1/3 w-full px-4 mb-4">
                     <img style={{ backgroundImage: "url(" + clothone + ")" }} className="w-full mx-auto h-[24rem] bg-center bg-contain bg-no-repeat" alt="" />
                     <h4>{like}</h4>
+
                     <button
                         onClick={() => {
                             addLike();

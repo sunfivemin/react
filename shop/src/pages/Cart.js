@@ -2,6 +2,7 @@ import { memo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { increase } from "./../store/userSlice.js";
 import { addCount } from "./../store.js";
+import { useUsername } from "./../hooks/useUsername.js";
 
 let Child = memo(function () {
     console.log("1222");
@@ -16,6 +17,7 @@ function Cart() {
     const cart = useSelector((state) => state.cart);
     const dispatch = useDispatch();
     let [count, setCount] = useState(0);
+    let username = useUsername();
 
     return (
         <div className="container p-4 mx-auto mt-10">
@@ -26,6 +28,7 @@ function Cart() {
                 }}>
                 +
             </button>
+            <p>{username}</p>
             <h6>
                 {user.name}({user.age})의 장바구니
             </h6>
