@@ -23,7 +23,7 @@ function List() {
                             <button
                                 onClick={() => {
                                     let copy = [...수량];
-                                    copy[i]++; // 각 상품의 수량을 증가시킴
+                                    copy[i]++;
                                     수량변경(copy);
                                 }}
                                 className="px-6 py-2 text-white transition-all bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 active:bg-blue-700">
@@ -32,7 +32,7 @@ function List() {
                             <button
                                 onClick={() => {
                                     let copy = [...수량];
-                                    if (copy[i] > 0) copy[i]--; // 각 상품의 수량을 감소시킴 (음수 방지)
+                                    if (copy[i] > 0) copy[i]--;
                                     수량변경(copy);
                                 }}
                                 className="px-6 py-2 text-white transition-all bg-blue-500 rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 active:bg-blue-700">
