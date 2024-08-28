@@ -1,22 +1,11 @@
-import Image from "next/image";
-
-function List() {
-    let name = ["seon", "kim", "lee"];
-
+export default function Payment(props) {
     return (
-        <div className="flex flex-col items-center justify-center w-full h-full min-h-screen px-5 bg-slate-800">
-            <h1 className="text-2xl text-slate-50 mb-7">payment</h1>
-            {name.map((item, index) => {
-                return (
-                    <div className="w-full p-8 mx-auto my-2 rounded-lg bg-slate-50 text-slate-900">
-                        <h4>
-                            {index + 1}. {item}
-                        </h4>
-                    </div>
-                );
-            })}
+        <div className="h-auto">
+            <div className="flex items-center w-full gap-6 px-6 mx-auto my-2 bg-blue-100 rounded-lg text-slate-900">
+                <h4>{props.items}</h4>
+                <p>$40</p>
+                <p>1개</p>
+            </div>
         </div>
     );
 }
-
-export default List;
